@@ -2,14 +2,18 @@ import React, { useState, useEffect } from "react";
 import "./styles.css"; // Assuming the styles are in styles.css
 
 const AssignmentConfigTopicsForm = ({
-  assignmentConfigData,
-  onSubmitTopics,
-  availableTopics,
+  assignmentConfigData, // Data from the assignment configuration form
+  onSubmitTopics, // Function to handle the form submission
+  availableTopics, // List of available topics to choose from
 }) => {
+  // State to hold the list of topics
   const [topics, setTopics] = useState([]);
+  // State to hold the total number of questions across all topics
   const [totalQuestions, setTotalQuestions] = useState(0);
+  // State to hold any error messages
   const [errorMessage, setErrorMessage] = useState("");
 
+  // Effect to update the total number of questions whenever topics change
   useEffect(() => {
     const total = topics.reduce(
       (acc, topic) => acc + parseInt(topic.NumberOfQuestions || 0),
@@ -18,6 +22,7 @@ const AssignmentConfigTopicsForm = ({
     setTotalQuestions(total);
   }, [topics]);
 
+  // Handle changes to input fields within each topic
   const handleChange = (index, e) => {
     const { name, value } = e.target;
     const updatedTopics = topics.map((topic, i) =>
@@ -26,6 +31,7 @@ const AssignmentConfigTopicsForm = ({
     setTopics(updatedTopics);
   };
 
+  // Handle adding a new topic to the list
   const handleAddTopic = (e) => {
     e.preventDefault();
     if (totalQuestions < assignmentConfigData.TotalQuestions) {
@@ -40,6 +46,7 @@ const AssignmentConfigTopicsForm = ({
     }
   };
 
+  // Handle form submission
   const handleSubmit = (e) => {
     e.preventDefault();
     if (totalQuestions > assignmentConfigData.TotalQuestions) {

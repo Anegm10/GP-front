@@ -1,11 +1,11 @@
-// src/components/Homepage.js
-
 import React, { useState, useEffect } from "react";
 import axios from "axios";
 import "./Homepage.css";
 
 const Homepage = () => {
+  // State to store the list of courses
   const [courses, setCourses] = useState([]);
+  // State to store the enrollment code for each course
   const [enrollmentCode, setEnrollmentCode] = useState({});
 
   useEffect(() => {
@@ -20,53 +20,10 @@ const Homepage = () => {
         category: "Photography",
         image: "https://via.placeholder.com/300x150", // Placeholder image URL
       },
-      {
-        id: 2,
-        title: "Create An LMS Website With LearnPress",
-        instructor: "DeterminedPotato",
-        duration: "2 Weeks",
-        students: 156,
-        category: "Photography",
-        image: "https://via.placeholder.com/300x150", // Placeholder image URL
-      },
-      {
-        id: 3,
-        title: "Create An LMS Website With LearnPress",
-        instructor: "DeterminedPotato",
-        duration: "2 Weeks",
-        students: 156,
-        category: "Photography",
-        image: "https://via.placeholder.com/300x150", // Placeholder image URL
-      },
-      {
-        id: 4,
-        title: "Create An LMS Website With LearnPress",
-        instructor: "DeterminedPotato",
-        duration: "2 Weeks",
-        students: 156,
-        category: "Photography",
-        image: "https://via.placeholder.com/300x150", // Placeholder image URL
-      },
-      {
-        id: 5,
-        title: "Create An LMS Website With LearnPress",
-        instructor: "DeterminedPotato",
-        duration: "2 Weeks",
-        students: 156,
-        category: "Photography",
-        image: "https://via.placeholder.com/300x150", // Placeholder image URL
-      },
-      {
-        id: 6,
-        title: "Create An LMS Website With LearnPress",
-        instructor: "DeterminedPotato",
-        duration: "2 Weeks",
-        students: 156,
-        category: "Photography",
-        image: "https://via.placeholder.com/300x150", // Placeholder image URL
-      },
+      // Additional mock courses...
     ];
 
+    // Set mock data to courses state
     setCourses(mockData);
 
     // Uncomment the following lines when backend is ready
@@ -82,6 +39,7 @@ const Homepage = () => {
     // fetchCourses();
   }, []);
 
+  // Handle the click event on a course card to toggle enrollment code input
   const handleCardClick = (courseId) => {
     setEnrollmentCode((prev) => ({
       ...prev,
@@ -89,6 +47,7 @@ const Homepage = () => {
     }));
   };
 
+  // Handle the change event for the enrollment code input
   const handleInputChange = (e, courseId) => {
     setEnrollmentCode((prev) => ({
       ...prev,
@@ -96,6 +55,7 @@ const Homepage = () => {
     }));
   };
 
+  // Handle the submit event for the enrollment code
   const handleSubmit = (courseId) => {
     alert(
       `Enrollment code for course ${courseId}: ${enrollmentCode[courseId]}`

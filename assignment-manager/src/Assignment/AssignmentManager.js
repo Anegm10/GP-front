@@ -4,11 +4,15 @@ import AssignmentConfigTopicsForm from "./AssignmentConfigTopicsForm";
 import "./styles.css"; // Assuming the styles are in styles.css
 
 const AssignmentManager = () => {
+  // State to hold assignment configuration data
   const [assignmentConfigData, setAssignmentConfigData] = useState(null);
+  // State to hold available topics
   const [availableTopics, setAvailableTopics] = useState([]);
 
+  // Effect to fetch available topics when the component mounts
   useEffect(() => {
     const fetchAvailableTopics = () => {
+      // Simulated fetch function, replace with actual data fetch if needed
       return [
         { id: "1", name: "Lesson 1" },
         { id: "2", name: "Lesson 2" },
@@ -16,20 +20,24 @@ const AssignmentManager = () => {
       ];
     };
 
+    // Set available topics state
     setAvailableTopics(fetchAvailableTopics());
   }, []);
 
+  // Handler for submitting assignment configuration data
   const handleAssignmentConfigSubmit = (data) => {
     setAssignmentConfigData(data);
   };
 
+  // Handler for submitting topics
   const handleTopicsSubmit = (topics) => {
+    // Combine assignment configuration data and topics
     const combinedData = {
       ...assignmentConfigData,
       topics: topics,
     };
 
-    // Send combined data to backend to save
+    // Send combined data to the backend
     fetch("http://localhost:5000/assignments", {
       method: "POST",
       headers: {
@@ -51,8 +59,8 @@ const AssignmentManager = () => {
       });
   };
 
+  // Effect to fetch assignments from the backend when the component mounts
   useEffect(() => {
-    // Function to fetch assignments from backend
     const fetchAssignments = async () => {
       try {
         const response = await fetch("http://localhost:5000/assignments"); // Replace with your backend URL
@@ -68,18 +76,21 @@ const AssignmentManager = () => {
       }
     };
 
-    fetchAssignments(); // Call the fetchAssignments function
+    // Call the fetchAssignments function
+    fetchAssignments();
   }, []); // Empty dependency array ensures this effect runs only once
 
   return (
     <div className="assignment-manager">
       {assignmentConfigData ? (
+        // Render the topics form if assignment configuration data is available
         <AssignmentConfigTopicsForm
           assignmentConfigData={assignmentConfigData}
           onSubmitTopics={handleTopicsSubmit}
           availableTopics={availableTopics}
         />
       ) : (
+        // Render the assignment configuration form if no data is available
         <AssignmentConfigForm onSubmit={handleAssignmentConfigSubmit} />
       )}
     </div>

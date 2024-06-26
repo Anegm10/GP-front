@@ -4,16 +4,18 @@ import { Bar } from "react-chartjs-2";
 import "chart.js/auto";
 
 const Dashboard = () => {
+  // State variables for managing year, term, chart data, loading state, and errors
   const [year, setYear] = useState(new Date().getFullYear());
   const [term, setTerm] = useState("1st Term");
   const [chartData, setChartData] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  // useEffect to fetch data whenever year or term changes
   useEffect(() => {
     const fetchData = async () => {
-      setLoading(true);
-      setError(null);
+      setLoading(true); // Start loading
+      setError(null); // Reset error state
 
       try {
         // Uncomment and modify the following lines when backend is ready
@@ -28,10 +30,12 @@ const Dashboard = () => {
           { course: "English", students: 35 },
         ];
 
+        // Process data if available
         if (data && data.length) {
           const courses = data.map((item) => item.course);
           const students = data.map((item) => item.students);
 
+          // Set chart data
           setChartData({
             labels: courses,
             datasets: [
@@ -48,20 +52,22 @@ const Dashboard = () => {
           setChartData({});
         }
       } catch (err) {
-        setError("Failed to fetch data");
+        setError("Failed to fetch data"); // Set error message
         setChartData({});
       }
 
-      setLoading(false);
+      setLoading(false); // Stop loading
     };
 
-    fetchData();
-  }, [year, term]);
+    fetchData(); // Call fetchData function
+  }, [year, term]); // Dependency array ensures this effect runs when year or term changes
 
+  // Handler for changing year
   const handleYearChange = (e) => {
     setYear(e.target.value);
   };
 
+  // Handler for changing term
   const handleTermChange = (e) => {
     setTerm(e.target.value);
   };
@@ -96,9 +102,9 @@ const Dashboard = () => {
       </div>
       <div style={{ maxWidth: "800px", margin: "0 auto" }}>
         {loading ? (
-          <p>Loading...</p>
+          <p>Loading...</p> // Display loading message
         ) : error ? (
-          <p>{error}</p>
+          <p>{error}</p> // Display error message
         ) : (
           <Bar
             data={chartData}
