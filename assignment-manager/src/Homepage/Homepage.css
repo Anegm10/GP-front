@@ -1,8 +1,9 @@
-/* src/components/Homepage.css */
+/* Homepage.css */
 
 .homepage-container {
   padding: 20px;
   text-align: center;
+  background-color: #f0f0f0; /* Light grey background */
 }
 
 .courses-container {
@@ -20,11 +21,13 @@
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   cursor: pointer;
   overflow: hidden;
-  transition: transform 0.2s;
+  transition: transform 0.2s, box-shadow 0.2s;
+  background-color: #e9ecef; /* Light grey background */
 }
 
 .course-card:hover {
-  transform: scale(1.05);
+  transform: translateY(-5px); /* Lifts the card on hover */
+  box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
 }
 
 .course-image {
@@ -35,25 +38,28 @@
 
 .course-info {
   padding: 15px;
-  background-color: #fff;
 }
 
 .course-info h3 {
   margin: 10px 0;
   font-size: 18px;
+  color: #000000; /* Black heading */
+  text-decoration: none; /* Remove underline from links */
 }
 
 .course-info p {
   margin: 5px 0;
   color: #555;
+  text-decoration: none; /* Remove underline from other text */
 }
 
 .course-category {
-  background-color: #f0f0f0;
+  background-color: #007bff; /* Blue background for category */
   padding: 5px 10px;
   border-radius: 5px;
   display: inline-block;
   margin-top: 10px;
+  color: #ffffff; /* White text */
 }
 
 .enrollment-container {
@@ -61,7 +67,7 @@
   justify-content: space-between;
   align-items: center;
   padding: 10px 15px;
-  background-color: #fff;
+  background-color: #e9ecef; /* Light grey background */
 }
 
 .enrollment-input {
@@ -72,15 +78,47 @@
 }
 
 .enrollment-submit {
-  padding: 5px 10px;
+  padding: 8px 16px;
   border: none;
-  background-color: #007bff;
-  color: #fff;
+  background-color: #007bff; /* Blue button */
+  color: #ffffff;
   border-radius: 5px;
   cursor: pointer;
   transition: background-color 0.2s;
 }
 
 .enrollment-submit:hover {
-  background-color: #0056b3;
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Updated styles for the View Course button */
+.view-course-button {
+  padding: 12px 24px;
+  background-color: #007bff; /* Blue button */
+  color: #ffffff;
+  border: none;
+  border-radius: 25px; /* Enhanced shape with rounded corners */
+  cursor: pointer;
+  transition: background-color 0.3s;
+  text-decoration: none; /* Remove default link underline */
+  display: inline-block;
+}
+
+.view-course-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
+}
+
+/* Updated styles for the Course Details button */
+.course-details-button {
+  padding: 8px 16px;
+  background-color: #007bff; /* Blue button */
+  color: #ffffff;
+  border: none;
+  border-radius: 5px; /* Rounded corners */
+  cursor: pointer;
+  transition: background-color 0.3s;
+}
+
+.course-details-button:hover {
+  background-color: #0056b3; /* Darker blue on hover */
 }

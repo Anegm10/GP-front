@@ -4,70 +4,61 @@ import { Bar } from "react-chartjs-2";
 import "chart.js/auto";
 
 const Dashboard = () => {
-  // State variables for managing year, term, chart data, loading state, and errors
-  const [year, setYear] = useState(new Date().getFullYear());
-  const [term, setTerm] = useState("1st Term");
-  const [chartData, setChartData] = useState({});
-  const [loading, setLoading] = useState(true);
+  const [year, setYear] = useState("");
+  const [term, setTerm] = useState("");
+  const [chartData, setChartData] = useState(null);
+  const [loading, setLoading] = useState(false);
   const [error, setError] = useState(null);
 
-  // useEffect to fetch data whenever year or term changes
   useEffect(() => {
-    const fetchData = async () => {
-      setLoading(true); // Start loading
-      setError(null); // Reset error state
+    if (year && term) {
+      const fetchData = async () => {
+        setLoading(true);
+        setError(null);
 
-      try {
-        // Uncomment and modify the following lines when backend is ready
-        // const response = await axios.get(`/api/enrollments?year=${year}&term=${term}`);
-        // const data = response.data;
+        try {
+          const response = await axios.get(
+            `https://learnhub.runasp.net/api/Course/StudentCount?year=${year}&term=${encodeURIComponent(
+              term
+            )}`
+          );
+          const data = response.data;
 
-        // Mock data for testing
-        const data = [
-          { course: "Math", students: 30 },
-          { course: "Science", students: 25 },
-          { course: "History", students: 20 },
-          { course: "English", students: 35 },
-        ];
+          if (data && data.length > 0) {
+            const courses = data.map((item) => item.courseName);
+            const students = data.map((item) => item.studentCount);
 
-        // Process data if available
-        if (data && data.length) {
-          const courses = data.map((item) => item.course);
-          const students = data.map((item) => item.students);
-
-          // Set chart data
-          setChartData({
-            labels: courses,
-            datasets: [
-              {
-                label: `Student Enrollments in ${year} ${term}`,
-                data: students,
-                backgroundColor: "rgba(75, 192, 192, 0.6)",
-                borderColor: "rgba(75, 192, 192, 1)",
-                borderWidth: 1,
-              },
-            ],
-          });
-        } else {
-          setChartData({});
+            setChartData({
+              labels: courses,
+              datasets: [
+                {
+                  label: `Student Enrollments in ${year} ${term}`,
+                  data: students,
+                  backgroundColor: "rgba(75, 192, 192, 0.6)",
+                  borderColor: "rgba(75, 192, 192, 1)",
+                  borderWidth: 1,
+                },
+              ],
+            });
+          } else {
+            setChartData(null); // No data case
+          }
+        } catch (err) {
+          setError("Failed to fetch data");
+          setChartData(null); // Reset chart data on error
         }
-      } catch (err) {
-        setError("Failed to fetch data"); // Set error message
-        setChartData({});
-      }
 
-      setLoading(false); // Stop loading
-    };
+        setLoading(false);
+      };
 
-    fetchData(); // Call fetchData function
-  }, [year, term]); // Dependency array ensures this effect runs when year or term changes
+      fetchData();
+    }
+  }, [year, term]);
 
-  // Handler for changing year
   const handleYearChange = (e) => {
     setYear(e.target.value);
   };
 
-  // Handler for changing term
   const handleTermChange = (e) => {
     setTerm(e.target.value);
   };
@@ -80,6 +71,7 @@ const Dashboard = () => {
           Filter by Year:{" "}
         </label>
         <select id="year" value={year} onChange={handleYearChange}>
+          <option value="">Select a year</option>
           {Array.from(
             new Array(10),
             (v, i) => new Date().getFullYear() - i
@@ -95,6 +87,7 @@ const Dashboard = () => {
           Filter by Term:{" "}
         </label>
         <select id="term" value={term} onChange={handleTermChange}>
+          <option value="">Select a term</option>
           <option value="1st Term">1st Term</option>
           <option value="2nd Term">2nd Term</option>
           <option value="Summer">Summer</option>
@@ -102,14 +95,16 @@ const Dashboard = () => {
       </div>
       <div style={{ maxWidth: "800px", margin: "0 auto" }}>
         {loading ? (
-          <p>Loading...</p> // Display loading message
+          <p>Loading...</p>
         ) : error ? (
-          <p>{error}</p> // Display error message
-        ) : (
+          <p>{error}</p>
+        ) : chartData ? (
           <Bar
             data={chartData}
             options={{ responsive: true, maintainAspectRatio: false }}
           />
+        ) : (
+          <p>No data available</p>
         )}
       </div>
     </div>

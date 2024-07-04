@@ -1,37 +1,58 @@
-/* src/Profile.css */
+/* Profile.css */
+
 .student-info {
-  background-color: white;
+  background-color: #f0f0f0;
   padding: 20px;
   border-radius: 10px;
-  max-width: 400px;
+  max-width: 500px; /* Adjusted maximum width for the form */
   margin: auto;
+  box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
 }
 
-.student-info div {
-  margin-bottom: 10px;
-  text-align: left;
+.student-info h2 {
+  font-size: 24px;
+  margin-bottom: 20px;
+  color: #333;
+  text-align: center; /* Center section titles */
 }
 
-.student-info label {
-  display: block;
+.form-group {
+  margin-bottom: 20px;
+}
+
+.form-label {
+  font-size: 16px;
   font-weight: bold;
+  margin-bottom: 5px;
+  color: #555;
+  display: block;
 }
 
-.student-info input {
-  width: 100%;
-  padding: 5px;
-  margin-top: 5px;
+.form-input {
+  width: calc(100% - 24px); /* Adjusted width to make it slightly narrower */
+  padding: 10px;
+  border: 1px solid #ccc;
+  border-radius: 5px;
+  font-size: 16px;
+  color: #444;
+  box-sizing: border-box; /* Ensures padding is included in width */
+  margin: auto; /* Center horizontally */
+  display: block; /* Ensures each input is on a new line */
 }
 
 .save-button {
-  background-color: blue;
+  background-color: #007bff;
   color: white;
-  padding: 10px;
+  padding: 12px 20px;
   border: none;
   border-radius: 5px;
   cursor: pointer;
+  font-size: 18px;
+  transition: background-color 0.3s ease;
+  display: block;
+  margin: auto; /* Center button */
 }
 
 .save-button:hover {
-  background-color: darkblue;
+  background-color: #0056b3;
 }

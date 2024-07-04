@@ -1,109 +1,64 @@
 import React, { useState, useEffect } from "react";
 import axios from "axios";
+import { Link, Redirect } from "react-router-dom";
 import "./Homepage.css";
 
 const Homepage = () => {
-  // State to store the list of courses
   const [courses, setCourses] = useState([]);
-  // State to store the enrollment code for each course
-  const [enrollmentCode, setEnrollmentCode] = useState({});
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+  const [redirectToCourseId, setRedirectToCourseId] = useState(null);
 
   useEffect(() => {
-    // Mock data for testing
-    const mockData = [
-      {
-        id: 1,
-        title: "Create An LMS Website With LearnPress",
-        instructor: "DeterminedPotato",
-        duration: "2 Weeks",
-        students: 156,
-        category: "Photography",
-        image: "https://via.placeholder.com/300x150", // Placeholder image URL
-      },
-      // Additional mock courses...
-    ];
+    const fetchCourses = async () => {
+      try {
+        const response = await axios.get(
+          "http://learnhub.runasp.net/api/Course"
+        );
+        setCourses(response.data);
+        setLoading(false);
+      } catch (error) {
+        console.error("Error fetching courses:", error);
+        setError("Failed to fetch courses");
+        setLoading(false);
+      }
+    };
 
-    // Set mock data to courses state
-    setCourses(mockData);
-
-    // Uncomment the following lines when backend is ready
-    // const fetchCourses = async () => {
-    //   try {
-    //     const response = await axios.get('/api/courses');
-    //     setCourses(response.data);
-    //   } catch (error) {
-    //     console.error('Error fetching courses:', error);
-    //   }
-    // };
-
-    // fetchCourses();
+    fetchCourses();
   }, []);
 
-  // Handle the click event on a course card to toggle enrollment code input
-  const handleCardClick = (courseId) => {
-    setEnrollmentCode((prev) => ({
-      ...prev,
-      [courseId]: !prev[courseId],
-    }));
+  const handleCourseDetails = (courseId) => {
+    setRedirectToCourseId(courseId);
   };
 
-  // Handle the change event for the enrollment code input
-  const handleInputChange = (e, courseId) => {
-    setEnrollmentCode((prev) => ({
-      ...prev,
-      [courseId]: e.target.value,
-    }));
-  };
-
-  // Handle the submit event for the enrollment code
-  const handleSubmit = (courseId) => {
-    alert(
-      `Enrollment code for course ${courseId}: ${enrollmentCode[courseId]}`
-    );
-  };
+  if (redirectToCourseId) {
+    return <Redirect to={`/course/${redirectToCourseId}`} />;
+  }
 
   return (
     <div className="homepage-container">
-      <h1>Build Skills With Online Course</h1>
-      <div className="courses-container">
-        {courses.map((course) => (
-          <div
-            key={course.id}
-            className="course-card"
-            onClick={() => handleCardClick(course.id)}
-          >
-            <img
-              src={course.image}
-              alt={course.title}
-              className="course-image"
-            />
-            <div className="course-info">
-              <h3>{course.title}</h3>
-              <p>by {course.instructor}</p>
-              <p>{course.duration}</p>
-              <p>{course.students} Students</p>
-              <div className="course-category">{course.category}</div>
+      <h1>Build Skills With Online Courses</h1>
+      {loading ? (
+        <p>Loading...</p>
+      ) : error ? (
+        <p>{error}</p>
+      ) : (
+        <div className="courses-container">
+          {courses.map((course) => (
+            <div key={course.id} className="course-card">
+              <h3>{course.name}</h3>
+              <p>ID: {course.id}</p>
+              <p>Duration: {course.duration}</p>
+              <button
+                onClick={() => handleCourseDetails(course.id)}
+                className="course-details-button"
+              >
+                View Details
+              </button>
             </div>
-            {enrollmentCode[course.id] && (
-              <div className="enrollment-container">
-                <input
-                  type="text"
-                  placeholder="Enter Enrollment Code"
-                  value={enrollmentCode[course.id] || ""}
-                  onChange={(e) => handleInputChange(e, course.id)}
-                  className="enrollment-input"
-                />
-                <button
-                  onClick={() => handleSubmit(course.id)}
-                  className="enrollment-submit"
-                >
-                  Submit
-                </button>
-              </div>
-            )}
-          </div>
-        ))}
-      </div>
+          ))}
+        </div>
+      )}
     </div>
   );
 };
